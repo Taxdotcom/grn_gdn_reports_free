@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <report
+            id="action_report_grn_pdf"
+            string="Custom Print"
+            model="stock.picking"
+            report_type="qweb-pdf"
+            file="od_grn_pdf_report.report_grn_template"
+            name="od_grn_pdf_report.report_grn_template"
+
+        />
+
+</odoo>

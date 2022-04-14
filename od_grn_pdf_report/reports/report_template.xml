@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <template id="external_layout_boxed_custom">
+        <t t-as="company" t-value="o.company_id"/>
+        <div t-attf-class="header o_company_#{o.company_id.id}_layout" t-att-style="report_header_style">
+            <div class="o_boxed_header">
+                <div class="row">
+                    <div class="col-2">
+                        <center>
+                            <img t-if="o.company_id.logo" t-att-src="image_data_uri(o.company_id.logo)"
+                                 style="height:110px;width:auto;max-width:220px;vertical-align:top;" alt="Logo"/>
+                        </center>
+                    </div>
+                    <div class="col-10" style="text-align: center;">
+                        <h1>ZEUS ENERGY (PVT)LTD</h1>
+                        <div class="row">
+                            <div class="col-12" style="text-align: center; font-size: 48;">
+                                <t t-set="partner" t-value="o.company_id.partner_id"/>
+                                <p><t t-esc="partner.street"/>,<t esc="partner.street2"/>,
+                                    <t t-esc="partner.city"/>
+                                </p>
+                                <p><t t-esc="partner.email"/>,
+                                    <t t-esc="partner.website"/>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div t-attf-class="article o_report_layout_boxed o_company_#{o.company_id.id}_layout" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
+            <t t-call="web.address_layout"/>
+            <t t-raw="0"/>
+        </div>
+    </template>
+
+    <template id="report_grn_template_document">
+        <t t-call="web.html_container">
+<!--            <div class="article">-->
+            <t t-call="od_grn_pdf_report.external_layout_boxed_custom">
+<!--                <div class="header">-->
+<!--                    <div class="row">-->
+<!--                        <div class="col-2">-->
+<!--                            <center>-->
+<!--                                <img t-if="o.company_id.logo" t-att-src="image_data_uri(o.company_id.logo)"-->
+<!--                                     style="height:110px;width:auto;max-width:220px;vertical-align:top;" alt="Logo"/>-->
+<!--                            </center>-->
+<!--                        </div>-->
+<!--                        <div class="col-10" style="text-align: center;">-->
+<!--                            <h1>ZEUS ENERGY (PVT)LTD</h1>-->
+<!--                            <div class="row">-->
+<!--                                <div class="col-12" style="text-align: center; font-size: 48;">-->
+<!--                                    <t t-set="partner" t-value="o.company_id.partner_id"/>-->
+<!--                                    <p><t t-esc="partner.street"/>,<t esc="partner.street2"/>,-->
+<!--                                        <t t-esc="partner.city"/>-->
+<!--                                    </p>-->
+<!--                                    <p><t t-esc="partner.email"/>,-->
+<!--                                        <t t-esc="partner.website"/>-->
+<!--                                    </p>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+                <div class="page">
+                    <div class="row mt32 mb32">
+                        <div class="col-12" style="text-align: center; font-size: 26;">
+                            <t t-if="o.picking_type_code == 'incoming'">
+                                <h4>GOODS RECEIVED NOTE</h4>
+                            </t>
+                            <t t-if="o.picking_type_code == 'outgoing'">
+                                <h4>GOODS DISPATCH NOTE</h4>
+                            </t>
+                        </div>
+                    </div>
+                    <div class="row mt32 mb32">
+                        <div class="col-2">
+                            Received By:
+                        </div>
+                        <div class="col-5">
+                            <t t-set="partner" t-value="o.partner_id"/>
+                            <div t-esc="partner"
+                                 t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True}'/>
+                        </div>
+                        <div class="col-5">
+                            <table class="table table-sm">
+                                <tr/>
+                                <tr>
+                                    <td style="text-align: right; border: 0; border-top: 1px solid black;">
+                                        <t t-if="o.picking_type_code == 'incoming'">
+                                            GRN NO:
+                                        </t>
+                                        <t t-if="o.picking_type_code == 'outgoing'">
+                                            DC. NO
+                                        </t>
+                                    </td>
+                                    <td style="text-align: right; border-top: 1px solid black;; border-bottom: 1px solid black;">
+                                        <t t-esc="o.name"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: right; border: 0;">
+                                        <t t-if="o.picking_type_code == 'incoming'">
+                                            GRN DATE:
+                                        </t>
+                                        <t t-if="o.picking_type_code == 'outgoing'">
+                                            DC. DATE
+                                        </t>
+                                    </td>
+                                    <td style="text-align: right; border-top: 0; border-bottom: 1px solid black;">
+                                        <t t-esc="o.scheduled_date" t-options='{"widget": "date"}'/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: right; border: 0;">
+                                        <t t-if="o.picking_type_code == 'incoming'">
+                                            PO NO:
+                                        </t>
+                                        <t t-if="o.picking_type_code == 'outgoing'">
+                                            DO NO
+                                        </t>
+                                    </td>
+                                    <td style="text-align: right; border-top: 0; border-bottom: 1px solid black;">
+                                        <t t-esc="o.origin"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: right; border: 0;">
+                                        <t t-if="o.picking_type_code == 'incoming'">
+                                            PO DATE:
+                                        </t>
+                                        <t t-if="o.picking_type_code == 'outgoing'">
+                                            DO DATE
+                                        </t>
+                                    </td>
+                                    <td style="text-align: right; border-top: 0; border-bottom: 1px solid black;">
+                                        <t t-esc="o.get_purchase_number()" t-options='{"widget": "date"}'/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: right; border: 0; border-bottom: 1px solid black;">BILL NO:</td>
+                                    <td style="text-align: right; border-top: 0; border-bottom: 1px solid black;">
+                                        <t t-esc="o.get_invoice_number()"/>
+                                    </td>
+                                </tr>
+                                <tr></tr>
+                            </table>
+                        </div>
+                    </div>
+                    <br/>
+                    <br/>
+                    <table class="table table-sm table-bordered" name="stock_move_table">
+                        <thead>
+                            <tr>
+                                <th>S.NO</th>
+                                <th>DESCRIPTION</th>
+                                <th>QTY/UNIT</th>
+                                <th>QTY RECEIVED</th>
+                                <th>UOM</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-set="lines" t-value="o.move_lines"/>
+                            <t t-set="serial_no" t-value="0"/>
+                            <tr t-foreach="lines" t-as="move">
+                                <t t-set="serial_no" t-value="serial_no + 1"/>
+                                <td>
+                                    <t t-esc="serial_no"/>
+                                </td>
+                                <td>
+                                    <span t-esc="move.product_id.display_name"/>
+                                </td>
+                                <td>
+                                    <span t-field="move.product_uom_qty"/>
+                                    <!--                                    <span t-field="move.product_uom"/>-->
+                                </td>
+                                <td>
+                                    <span t-field="move.product_uom_qty"/>
+                                </td>
+                                <td>
+                                    <span t-field="move.product_uom"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br/>
+                    <br/>
+                    <div>REMARKS:
+                        <p t-field="o.note"/>
+                    </div>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <div class="row">
+                        <div class="col-4">
+                            <div style="text-align: right;">PREPARED BY:
+                                .......................................................
+                            </div>
+                            <div style="text-align: right;">NAME &amp; Designation</div>
+                        </div>
+                        <div class="col-4">
+                            <div style="text-align: right;">INSPECTED BY:
+                                .......................................................
+                            </div>
+                            <div style="text-align: right;">NAME &amp; Designation</div>
+                        </div>
+                        <div class="col-4">
+                            <div style="text-align: right;">RECEIVED BY:
+                                .......................................................
+                            </div>
+                            <div style="text-align: right;">NAME &amp; Designation</div>
+                        </div>
+                    </div>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <div class="row">
+                        <div class="col-8"/>
+                        <div class="col-4">
+                            <div style="text-align: right;">APPROVED BY:
+                                .......................................................
+                            </div>
+                            <div style="text-align: right;">NAME &amp; Designation</div>
+                        </div>
+                    </div>
+                    <hr/>
+                    <div class="row" style="font-size: 11px;">
+                        <div class="col-3">
+                            <div style="text-align: center;">WHITE (Original): Customer</div>
+                        </div>
+                        <div class="col-3">
+                            <div style="text-align: center;">YELLOW (Copy): Accounts</div>
+                        </div>
+                        <div class="col-3">
+                            <div style="text-align: center;">PINK (COPY): TRANSPORTER</div>
+                        </div>
+                        <div class="col-3">
+                            <div style="text-align: center;">BLUE (COPY): STORE</div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+<!--            </div>-->
+        </t>
+    </template>
+
+    <template id="report_grn_template">
+        <t t-foreach="docs" t-as="o">
+            <t t-call="od_grn_pdf_report.report_grn_template_document" t-lang="o.partner_id.lang"/>
+        </t>
+    </template>
+
+</odoo>
